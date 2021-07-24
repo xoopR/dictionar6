@@ -6,6 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>R6 Dictionary Interface • dictionar6</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -13,6 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="R6 Dictionary Interface">
 <meta property="og:description" content="dictionar6 provides an efficient object-oriented R6 dictionary capable of holding objects of any class, including R6. Typed and untyped dictionaries are provided as well as the usual dictionary methods that are available in other OOP languages, for example listing keys, items, values, and methods to get/set these.">
+<meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -72,7 +79,110 @@
 <div id="dictionar6" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dictionar6" class="anchor"></a>dictionar6</h1></div>
-<p>R6 Dictionary with fast and lightweight symbolic representation</p>
+<p><img src="reference/figures/logo.png" align="right" alt="" width="120"></p>
+<p><a href="https://cran.r-project.org/package=dictionar6"><img src="https://www.r-pkg.org/badges/version-ago/dictionar6" alt="CRAN Status Badge"></a> <a href="https://cran.r-project.org/web/checks/check_results_dictionar6.html"><img src="https://cranchecks.info/badges/worst/dictionar6" alt="CRAN Checks"></a> <a href="https://github.com/xoopR/dictionar6/actions/workflows/check-covr.yml"><img src="https://github.com/xoopR/dictionar6/actions/workflows/check-covr.yml/badge.svg?branch=main" alt="R-CMD-check / codecov"></a></p>
+<p><a href="https://github.com/xoopR/dictionar6"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Repo Status"></a> <a href="https://github.com/xoopR/dictionar6"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg" alt="Lifecycle"></a></p>
+<p><a href="https://cran.r-project.org/package=dictionar6"><img src="https://cranlogs.r-pkg.org/badges/grand-total/dictionar6" alt="CRAN Downloads"></a> <a href="https://codecov.io/gh/xoopR/dictionar6"><img src="https://codecov.io/gh/xoopR/dictionar6/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://CRAN.R-project.org/package=dictionar6"><img src="https://tinyverse.netlify.com/badge/dictionar6" alt="dependencies"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a></p>
+<div id="what-is-dictionar6" class="section level2">
+<h2 class="hasAnchor">
+<a href="#what-is-dictionar6" class="anchor"></a>What is dictionar6?</h2>
+<p><strong>dictionar6</strong> is an R6 dictionary interface that makes use of symbolic representation to efficiently store R6 and non-R6 objects as symbols to prevent issues with cloning, large object sizes, or construction bottlenecks. The dictionary contains all ‘usual’ methods for getting and setting elements.</p>
+</div>
+<div id="main-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#main-features" class="anchor"></a>Main Features</h2>
+<p>Some main features/key use-cases of <strong>dictionar6</strong> includes:</p>
+<ul>
+<li>Construction of untyped dictionaries</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/dct.html">dct</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="st">"2"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">## {a: 1, b: 2}</span></span></code></pre></div>
+<ul>
+<li>Construction of typed dictionaries</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/dct.html">dct</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1L</span>, b <span class="op">=</span> <span class="fl">2L</span>, c <span class="op">=</span> <span class="fl">3L</span>, types <span class="op">=</span> <span class="st">"integer"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## {a: 1, b: 2, c: 3}</span></span></code></pre></div>
+<ul>
+<li>Getting values</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dct.html">dct</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="va">d</span><span class="op">$</span><span class="fu">has</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## [1] 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">## $a</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">## [1] 1</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">## </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">## $b</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">## [1] 2</span></span></code></pre></div>
+<ul>
+<li>Setting values</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dct.html">dct</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="va">d</span><span class="op">$</span><span class="fu">rekey</span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span><span class="op">)</span>
+<span class="va">d</span><span class="op">$</span><span class="va">keys</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co">## [1] "c" "b"</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span><span class="op">$</span><span class="fu">revalue</span><span class="op">(</span><span class="st">"b"</span>, <span class="fl">3</span><span class="op">)</span>
+<span class="va">d</span><span class="op">$</span><span class="va">items</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## $c</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">## [1] 1</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="co">## </span></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">## $b</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="co">## [1] 3</span></span></code></pre></div>
+<ul>
+<li>Safe cloning of R6 objects</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">r</span> <span class="op">&lt;-</span> <span class="va">RClass</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">r</span><span class="op">$</span><span class="fu">values</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## [1] 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dct.html">dct</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">r</span><span class="op">)</span>
+<span class="co"># default is to clone</span>
+<span class="va">d</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"a"</span>, clone <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="co"># r is unaffected</span>
+<span class="va">r</span><span class="op">$</span><span class="fu">values</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">## [1] 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># if we don't clone...</span>
+<span class="va">d</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"a"</span>, clone <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
+<span class="co"># r is affected</span>
+<span class="va">r</span><span class="op">$</span><span class="fu">values</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">## [1] 1 2</span></span></code></pre></div>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>For the latest release on <a href="https://CRAN.R-project.org/package=dictionar6">CRAN</a>, install with</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dictionar6"</span><span class="op">)</span></code></pre></div>
+<p>Otherwise for the latest stable build</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"xoopR/dictionar6"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="use-cases" class="section level2">
+<h2 class="hasAnchor">
+<a href="#use-cases" class="anchor"></a>Use-cases</h2>
+<p><strong>dictionar6</strong> is currently used in <strong><a href="https://CRAN.R-project.org/package=param6">param6</a></strong> to provide a symbolic representation for R6 classes. This is incredibly useful to prevent storing unnecessarily large R6 objects. <strong><a href="https://CRAN.R-project.org/package=param6">param6</a></strong> comes pre-loaded with a <a href="https://xoopr.github.io/dictionar6/reference/Dictionary.html">Dictionary</a> of mathematical sets where the keys are symbolic representations of the sets and the values are the sets themselves, this allows users to refer to R6 objects with their character representation without having to continually construct new objects.</p>
+</div>
+<div id="future-plans" class="section level2">
+<h2 class="hasAnchor">
+<a href="#future-plans" class="anchor"></a>Future Plans</h2>
+<p>The <strong>dictionar6</strong> API is still experimental and may be subject to major changes. Currently it’s primary use-case is in <strong><a href="https://CRAN.R-project.org/package=param6">param6</a></strong>, minor or major changes will be made to satisfy this dependency. Future development will then focus on code quality and speed.</p>
+</div>
+<div id="package-development-and-contributing" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-development-and-contributing" class="anchor"></a>Package Development and Contributing</h2>
+<p><strong>dictionar6</strong> is released under the <a href="https://opensource.org/licenses/MIT">MIT licence</a>. We welcome and appreciate all <a href="https://github.com/xoopR/dictionar6/issues">new issues</a> relating to bug reports, questions and suggestions. You can also <a href="https://github.com/xoopR/dictionar6/discussions">start a discussion</a> for more extensive feedback or feature suggestion.</p>
+</div>
 </div>
   </div>
 
