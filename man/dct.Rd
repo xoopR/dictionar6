@@ -4,7 +4,7 @@
 \alias{dct}
 \title{Construct a Dictionary}
 \usage{
-dct(..., x = list(...), types)
+dct(..., x = list(...), types = NULL)
 }
 \arguments{
 \item{...}{(\code{ANY}) \cr
