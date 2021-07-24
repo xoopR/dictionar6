@@ -43,6 +43,7 @@ Get the dictionary types (NULL if un-typed).}
 \item \href{#method-get}{\code{Dictionary$get()}}
 \item \href{#method-get_list}{\code{Dictionary$get_list()}}
 \item \href{#method-has}{\code{Dictionary$has()}}
+\item \href{#method-assert_contains}{\code{Dictionary$assert_contains()}}
 \item \href{#method-has_value}{\code{Dictionary$has_value()}}
 \item \href{#method-print}{\code{Dictionary$print()}}
 \item \href{#method-summary}{\code{Dictionary$summary()}}
@@ -226,6 +227,25 @@ Checks if the given key is in the list, returns a logical.
 \describe{
 \item{\code{key}}{(\code{character(1)}) \cr
 Key to check.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-assert_contains"></a>}}
+\if{latex}{\out{\hypertarget{method-assert_contains}{}}}
+\subsection{Method \code{assert_contains()}}{
+Asserts if the given keys are in the list, returns keys
+invisibly if assertion passes otherwise errors.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Dictionary$assert_contains(keys)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{keys}}{(\code{character()}) \cr
+Keys to check.}
 }
 \if{html}{\out{</div>}}
 }

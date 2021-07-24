@@ -41,6 +41,15 @@ summary.Dictionary <- function(object, n = 2, ...) {
   object$summary(n = n)
 }
 
+#' @title Create a string representation of an R6 class
+#' @description Creates a string representation of an [R6::R6Class] if not
+#' already defined.
+#' @param x ([R6::R6Class])
+#' @export
+as.character.R6 <- function(x) {
+  class(x)[[1]]
+}
+
 #' @title Create a string representation of a Dictionary
 #' @description Creates a string representation of a [Dictionary] used in
 #' printing.
@@ -51,7 +60,7 @@ summary.Dictionary <- function(object, n = 2, ...) {
 #' @export
 as.character.Dictionary <- function(x, n = 2, ...) { # nolint
   keys <- x$keys
-  values <- unname(unlist(sapply(x$values, as.character)))
+  values <- vapply(x$values, as.character, character(1), USE.NAMES = FALSE)
 
   lng <- x$length
   if (lng > (2 * n)) {

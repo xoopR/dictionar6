@@ -21,7 +21,7 @@ d6 <- "**dictionar6**"
 
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/dictionar6)](https://cran.r-project.org/package=dictionar6)
 [![CRAN Checks](https://cranchecks.info/badges/worst/dictionar6)](https://cran.r-project.org/web/checks/check_results_dictionar6.html)
-[![R CMD Check](https://github.com/xoopR/dictionar6/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/xoopR/dictionar6/actions/workflows/r-cmd-check.yml)
+[![R-CMD-check / codecov](https://github.com/xoopR/dictionar6/actions/workflows/check-covr.yml/badge.svg?branch=main)](https://github.com/xoopR/dictionar6/actions/workflows/check-covr.yml)
 
 [![Repo Status](https://www.repostatus.org/badges/latest/active.svg)](https://github.com/xoopR/dictionar6)
 [![Lifecycle](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://github.com/xoopR/dictionar6)
@@ -42,16 +42,16 @@ Some main features/key use-cases of `r d6` includes:
 * Construction of untyped dictionaries
 
 ```{r construction untyped}
-dct(a = 1, b = "2", c = R6Class()$new())
+dct(a = 1, b = "2")
 ```
 
 * Construction of typed dictionaries
 
-```{r construction untyped}
+```{r construction typed}
 dct(a = 1L, b = 2L, c = 3L, types = "integer")
 ```
 
-* Getting and setting values
+* Getting values
 
 ```{r get}
 d <- dct(a = 1, b = 2)
@@ -60,53 +60,46 @@ d$get("a")
 d[c("a", "b")]
 ```
 
+* Setting values
+
 ```{r set}
 d <- dct(a = 1, b = 2)
 d$rekey("a", "c")
 d$keys
 d$revalue("b", 3)
-d$values
+d$items
 ```
 
 * Safe cloning of R6 objects
 
-```{r R6}
-RClass <- R6Class("RClass",
+```{r R6, echo=FALSE}
+RClass <- R6::R6Class("RClass",
   public = list(
     initialize = function(x) private$.x <- x,
     add = function(x) {
       private$.x <- c(private$.x, x)
       invisible(self)
-    }
+    },
+    values = function(x) unlist(private$.x)
   ),
   private = list(.x = list())
 )
+```
 
+```{r store R6}
 r <- RClass$new(1)
+r$values()
 d <- dct(a = r)
 # default is to clone
 d$get("a", clone = TRUE)$add(2)
 # r is unaffected
-r
+r$values()
 
 # if we don't clone...
 d$get("a", clone = FALSE)$add(2)
-# r is unaffected
-r
+# r is affected
+r$values()
 ```
-
-## Use-cases
-
-`r d6` is currently used in `r cran(param6)` to provide a symbolic representation for R6 classes. This is incredibly useful to prevent storing unnecessarily large R6 objects. `r cran(param6)` comes pre-loaded with a dictionary of mathematical sets where the keys are symbolic representations of the sets and the values are the sets themselves, this allows users to refer to R6 objects with their character representation without having to continually construct new objects.
-
-`r d6` began as the [ParameterSet](https://github.com/alan-turing-institute/distr6/blob/main/R/ParameterSet.R) object in `r cran(distr6)`. However this initial attempt at an R6 parameter set interface, had massive bottlenecks that were causing substantial problems in dependencies. `r d6` is an abstracted parameter set interface that draws influence from this initial design. `r d6` achieves faster run-times and smaller object-sizes than other parameter set packages by making the following design decisions:
-
-* `data.table` objects are minimised and only used when absolutely necessary, instead `list` objects are utilised.
-* Symbolic representation of sets is utilised via the `r cran(set6)` package in order to store sets as characters, thereby reducing object sizes. Additionally, `r d6` includes a `r ref(support_dictionary)` which stores constructed sets that can then be accessed via a string representation, thereby preventing the same set needing to be constructed multiple times.
-* `r cran(Rcpp)` is utilised via `r cran(set6)` in order to allow very fast containedness checks when checking values lie within a parameter support.
-* S3 is embraced for simple objects, such as the `r ref(prm)` object in order to increase speed in construction times.
-* Parameters are grouped internally by their supports, and not individually, allowing for a further increase in efficiency of both storage and runtimes in containedness checks
-* The notion of 'parameter set collections' is removed in favour of automated methods for setting and getting prefixes in parameter IDs
 
 ## Installation
 
@@ -119,6 +112,10 @@ Otherwise for the latest stable build
 ```{r eval=FALSE}
 remotes::install_github("xoopR/dictionar6")
 ```
+
+## Use-cases
+
+`r d6` is currently used in `r cran(param6)` to provide a symbolic representation for R6 classes. This is incredibly useful to prevent storing unnecessarily large R6 objects. `r cran(param6)` comes pre-loaded with a `r ref("Dictionary")` of mathematical sets where the keys are symbolic representations of the sets and the values are the sets themselves, this allows users to refer to R6 objects with their character representation without having to continually construct new objects.
 
 ## Future Plans
 
