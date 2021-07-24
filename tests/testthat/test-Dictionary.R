@@ -53,6 +53,12 @@ test_that("add untyped", {
     Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4))
   )
 
+  expect_equal(
+    Dictionary$new(x = list(a = 1, b = 2))$add(keys = c("c", "d"),
+                                               values = 3:4),
+    Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4))
+  )
+
   expect_error(Dictionary$new()$add(), "Either")
 })
 
@@ -67,6 +73,14 @@ test_that("add typed", {
   expect_equal(
     Dictionary$new(x = list(a = 1, b = 2), types = "numeric")$add(list(c = 3,
                                                                    d = 4)),
+    Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4), types = "numeric")
+  )
+
+  d <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
+  d[c("c", "d")] <- c(3, 4)
+
+  expect_equal(
+    d,
     Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4), types = "numeric")
   )
 })
@@ -270,4 +284,7 @@ test_that("can revalue", {
   d <- dct(a = 1)
   d$revalue("a", 2)
   expect_equal(d$get("a"), 2)
+
+  d <- dct(a = 1, types = "numeric")
+  expect_error(d$revalue("a", "b"), "inherits")
 })

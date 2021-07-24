@@ -29,6 +29,8 @@ assert_named_list <- function(x, types = NULL) {
   invisible(x)
 }
 
-`%nin%` <- function(x, y) {
-  !(x %in% y)
+
+#' @export
+as.character.R6 <- function(x, ...) {
+  class(x)[[1]]
 }

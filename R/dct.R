@@ -27,6 +27,6 @@
 #' d <- dct(a = 1)
 #' dct(d = d)
 #' @export
-dct <- function(..., x = list(...), types) {
-    Dictionary$new(x = x, types)
+dct <- function(..., x = list(...), types = NULL) {
+    Dictionary$new(x = x, types = types)
 }

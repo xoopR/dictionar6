@@ -12,7 +12,7 @@
       if (is.null(keys) || is.null(values)) {
          stop("Either a named list or 'keys' and 'values' must be provided.") # nolint
       }
-      x <- setNames(list(values), keys)
+      x <- setNames(as.list(values), keys)
    }
    # signif quicker than first concatenating and then checking type
    assert_named_list(x, types = private$.types)
