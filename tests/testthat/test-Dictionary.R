@@ -288,3 +288,11 @@ test_that("can revalue", {
   d <- dct(a = 1, types = "numeric")
   expect_error(d$revalue("a", "b"), "inherits")
 })
+
+
+test_that("can add R6", {
+  d <- dct(a = 1)
+  d$add(keys = "b", values = Set$new(1))
+  expect_equal(d$keys, c("a", "b"))
+  expect_equal(d$get("b")$values(), 1)
+})
