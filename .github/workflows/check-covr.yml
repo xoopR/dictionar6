@@ -84,12 +84,9 @@ jobs:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
 
-      - name: Install covr
-        if: ${{ github.event_name == 'pull_request' && runner.os == 'Linux' && matrix.config.r == 'release'}}
-        run: install.packages('covr')
-        shell: Rscript {0}
-
       - name: Test coverage
         if: ${{ github.event_name == 'pull_request' && runner.os == 'Linux' && matrix.config.r == 'release'}}
-        run: covr::codecov()
+        run: |
+          install.packages('covr')
+          covr::codecov()
         shell: Rscript {0}
