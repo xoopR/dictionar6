@@ -5,7 +5,7 @@
 
 
 #' @export
-`[<-.Dictionary` <- function(x, i, value) {
+`[<-.Dictionary` <- function(x, i, value) { # nolint
   x$add(keys = i, values = value)
   invisible(x)
 }
