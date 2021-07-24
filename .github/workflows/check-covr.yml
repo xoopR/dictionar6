@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: "0 4 * * *"
 
-name: R-CMD-check / codecov
+name: R-CMD-check
 
 jobs:
   R-CMD-check:
