@@ -12,6 +12,11 @@
       if (is.null(keys) || is.null(values)) {
          stop("Either a named list or 'keys' and 'values' must be provided.") # nolint
       }
+      if (!is_r6(values) && length(values) > 1) {
+         values <- as.list(values)
+      } else if (!is.list(values)) {
+         values <- list(values)
+      }
       x <- setNames(as.list(values), keys)
    }
    # signif quicker than first concatenating and then checking type
