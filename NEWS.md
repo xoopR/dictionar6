@@ -1,3 +1,3 @@
-# dictionar6 0.1.0
+# dictionar6 0.1.1
 
 * Initial upload to CRAN.
