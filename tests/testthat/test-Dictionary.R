@@ -6,6 +6,9 @@ library(testthat)
       add = function(x) {
         private$.x <- c(private$.x, x)
         invisible(self)
+      },
+      values = function(x) {
+        unlist(private$.x)
       }
     ),
     private = list(.x = list())
@@ -96,34 +99,35 @@ test_that("get", {
   expect_error(d_typed$get("c"), "Not all keys")
 
   d <- Dictionary$new(x = list(a = Set$new(1), b = 2))
-  expect_equal(d$get("a"), Set$new(1))
+  expect_equal(d$get("a")$values(), 1)
   expect_equal(d$get("b"), 2)
 
   d <- Dictionary$new(x = list(a = Set$new(1), b = Set$new(2)), types = "Set")
-  expect_equal(d$get(c("a", "b")), list(a = Set$new(1), b = Set$new(2)))
+  expect_equal(lapply(d$get(c("a", "b")), function(x) x$values()),
+               list(a = 1, b = 2))
 
   ## don't clone - changes s
   s <- Set$new(1)
   d <- Dictionary$new(a = s)
   d$get("a", FALSE)$add(2)
   expect_equal(s, Set$new(c(1, 2)))
-  expect_equal(d$get("a"), Set$new(c(1, 2)))
+  expect_equal(d$get("a")$values(), Set$new(c(1, 2))$values())
 
   ## clone - doesn't changes s
   s <- Set$new(1)
   d <- Dictionary$new(a = s)
   d$get("a")$add(2)
-  expect_equal(s, Set$new(1))
-  expect_equal(d$get("a"), Set$new(1))
-  expect_equal(d$get("a")$add(2), Set$new(c(1, 2)))
+  expect_equal(s$values(), Set$new(1)$values())
+  expect_equal(d$get("a")$values(), Set$new(1)$values())
+  expect_equal(d$get("a")$add(2)$values(), Set$new(c(1, 2))$values())
 
   d <- Dictionary$new(x = list(a = Set$new(1), b = Set$new(2)), types = "Set")
   d$get(c("a", "b"), FALSE)[[1L]]$add(2)
-  expect_equal(d$get("a"), Set$new(c(1, 2)))
+  expect_equal(d$get("a")$values(), Set$new(c(1, 2))$values())
 
   d <- Dictionary$new(x = list(a = Set$new(1), b = Set$new(2)), types = "Set")
   d$get(c("a", "b"), TRUE)[[1L]]$add(2)
-  expect_equal(d$get("a"), Set$new(1))
+  expect_equal(d$get("a")$values(), Set$new(1)$values())
 })
 
 test_that("get_list", {
@@ -135,7 +139,8 @@ test_that("get_list", {
   expect_equal(d_untyped[c("a", "b")], list(a = 1, b = 2))
 
   d <- Dictionary$new(x = list(a = Set$new(1), b = 2))
-  expect_equal(d$get_list(c("a", "b")), list(a = Set$new(1), b = 2))
+  expect_equal(d$get_list(c("a", "b"))[[1]]$values(), 1)
+  expect_equal(d$get_list(c("a", "b"))[[2]], 2)
 })
 
 test_that("has", {
