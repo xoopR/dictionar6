@@ -4,10 +4,12 @@
 \alias{as.character.R6}
 \title{Create a string representation of an R6 class}
 \usage{
-\method{as.character}{R6}(x)
+\method{as.character}{R6}(x, ...)
 }
 \arguments{
 \item{x}{(\link[R6:R6Class]{R6::R6Class})}
+
+\item{...}{Unused}
 }
 \description{
 Creates a string representation of an \link[R6:R6Class]{R6::R6Class} if not

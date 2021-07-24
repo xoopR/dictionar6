@@ -4,9 +4,12 @@
 \alias{Dictionary}
 \title{R6 Dictionary}
 \description{
-The dictionary is solely used as a mutable interface for the
-\link{support_dictionary}. It is exported and documented here for ease of use
-but is not extensively tested as it is minimally user-facing.
+Dictionaries are essential objects in other object-oriented
+languages, such as Python. The primary function of a dictionary is to store
+items in a key-value pair. Where the key is the name of the item and the
+value is the value. This object contains all the 'usual' methods that would
+be found in other languages, including setting and getting values,
+adding and removing items, and containedness checks.
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}

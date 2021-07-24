@@ -45,8 +45,9 @@ summary.Dictionary <- function(object, n = 2, ...) {
 #' @description Creates a string representation of an [R6::R6Class] if not
 #' already defined.
 #' @param x ([R6::R6Class])
+#' @param ... Unused
 #' @export
-as.character.R6 <- function(x) {
+as.character.R6 <- function(x, ...) {
   class(x)[[1]]
 }
 
