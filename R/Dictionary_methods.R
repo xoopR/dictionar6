@@ -119,9 +119,10 @@
 }
 
 .Dictionary__merge <- function(self, private, x) { # nolint
+
    if (inherits(x, "Dictionary")) {
       self$add(x$items)
-   } else if (is.list(x, "Dictionary")) {
+   } else if (is.list(x)) {
       lapply(x, function(.x) self$add(.x$items))
    } else {
       stop("'x' should either be a Dictionary or list of Dictionaries.")
@@ -141,6 +142,11 @@
    if (missing(x)) {
       private$.items
    } else {
-      private$.items <- assert_named_list(x, private$.types)
+      if (length(x)) {
+         private$.items <- assert_named_list(x, private$.types)
+      } else {
+         private$.items <- NULL
+      }
+
    }
 }
