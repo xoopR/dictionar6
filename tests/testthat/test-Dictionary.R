@@ -97,7 +97,10 @@ test_that("remove", {
   expect_equal_dictionary(d_untyped$remove(letters[1:2]), Dictionary$new())
 
   expect_silent(d_untyped$add(list(a = 1, b = 2)))
-  expect_equal_dictionary(d_untyped$remove("a"), Dictionary$new(x = list(b = 2)))
+  expect_equal_dictionary(
+    d_untyped$remove("a"),
+    Dictionary$new(x = list(b = 2))
+  )
 })
 
 test_that("get", {
