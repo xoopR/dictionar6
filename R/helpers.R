@@ -1,20 +1,18 @@
 string_as_set <- function(str) {
     if (!is.null(str)) {
-        paste0("{", paste0(str, collapse = ", "), "}")
+        sprintf("{%s}", paste0(str, collapse = ", "))
     }
 }
 
-is_r6 <- function(x) {
-    inherits(x, "R6")
-}
 
 assert_named_list <- function(x, types = NULL) {
-    if (!is.list(x)) {
-      stop("'x' must be a list")
-    } else if (!length(names(x))) {
-      stop("'x' must be named")
-    } else if (any(duplicated(names(x)))) {
-      stop("names of 'x' must be unique")
+
+    if (!inherits(x, c("list", "environment"))) {
+      stop("'x' must be a list or environment")
+    }
+
+    if (is.list(x) && (is.null(nms <- names(x)) || anyDuplicated(nms))) {
+      stop("'x' must have unique names")
     }
 
     if (!is.null(types)) {
@@ -27,10 +25,4 @@ assert_named_list <- function(x, types = NULL) {
     }
 
   invisible(x)
-}
-
-
-#' @export
-as.character.R6 <- function(x, ...) {
-  class(x)[[1]]
 }
