@@ -15,7 +15,7 @@ as_list_env <- function(env) {
 
 where_env <- function(nm, env) {
   if (!exists(nm, env)) {
-    stop(sprintf("'%s' does not exist in 'env' or its parents", deparse(nm)))
+    stop(sprintf("'%s' does not exist in 'env' or its parents", nm))
   }
 
   if (exists(nm, env, inherits = FALSE)) {
@@ -39,7 +39,7 @@ update_env_value <- function(nm, value, env) {
 
 rename_env_item <- function(nm, new_nm, env) {
   if (exists(new_nm, env)) {
-    stop(sprintf("'%s' already exists in 'env'", deparse(new_nm)))
+    stop(sprintf("'%s' already exists in 'env'", new_nm))
   }
 
   which_env <- where_env(nm, env)

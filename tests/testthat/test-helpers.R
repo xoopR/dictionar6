@@ -16,7 +16,7 @@ test_that("update_env_value", {
     update_env_value("a", 3, e2)
     expect_equal(e1$a, 3)
 
-    expect_error(update_env_value("e", 3, e2), "does not exist")
+    expect_error(update_env_value("e", 3, e2), "'e' does not exist")
 })
 
 test_that("rename_env_item", {
@@ -24,7 +24,7 @@ test_that("rename_env_item", {
     e2 <- list2env(list(b = 2), parent = e1)
 
     expect_error(rename_env_item("a", "b", e2), "already exists")
-    expect_error(rename_env_item("e", "d", e2), "does not exist")
+    expect_error(rename_env_item("e", "d", e2), "'e' does not exist")
 
     rename_env_item("a", "f", e2)
     expect_equal(e1$a, NULL)
