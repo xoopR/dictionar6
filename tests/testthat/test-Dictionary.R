@@ -89,8 +89,8 @@ test_that("remove", {
   d_typed <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
   d_untyped <- Dictionary$new(x = list(a = 1, b = 2))
 
-  expect_error(d_typed$remove("c"), "value for")
-  expect_error(d_untyped$remove("c"), "value for")
+  expect_error(d_typed$remove("c"), "does not exist")
+  expect_error(d_untyped$remove("c"), "does not exist")
 
   expect_equal_dictionary(d_typed$remove(letters[1:2]),
                Dictionary$new(types = "numeric"))

@@ -123,7 +123,7 @@
      stop("'new_key' already exists in self$keys")
    }
 
-   rename_env(key, new_key, private$.items)
+   rename_env_item(key, new_key, private$.items)
    invisible(self)
 }
 

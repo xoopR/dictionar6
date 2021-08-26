@@ -14,34 +14,38 @@ as_list_env <- function(env) {
 }
 
 where_env <- function(nm, env) {
+  if (!exists(nm, env)) {
+    stop(sprintf("'%s' does not exist in 'env' or its parents", deparse(nm)))
+  }
+
   if (exists(nm, env, inherits = FALSE)) {
     env
   } else {
-    if (!identical(parent.env(env), emptyenv())) {
-      where_env(nm, parent.env(env))
-    } else {
-      stop(sprintf("value for '%s' not found", nm))
-    }
+    where_env(nm, parent.env(env))
   }
 }
+
 
 rm_env <- function(nm, env) {
   rm(list = nm, envir = where_env(nm, env))
+  invisible(env)
 }
 
 update_env_value <- function(nm, value, env) {
-  if (exists(nm, env, inherits = FALSE)) {
-    env[[nm]] <- value
-  } else {
-    update_env_value(nm, parent.env(env))
-  }
+  env <- where_env(nm, env)
+  env[[nm]] <- value
+  invisible(env)
 }
 
-rename_env <- function(nm, new_nm, env) {
-  if (exists(nm, env, inherits = FALSE)) {
-    env[[new_nm]] <- env[[nm]]
-    rm(list = nm, envir = env)
-  } else {
-    rename_env(nm, new_nm, parent.env(env))
+rename_env_item <- function(nm, new_nm, env) {
+  if (exists(new_nm, env)) {
+    stop(sprintf("'%s' already exists in 'env'", deparse(new_nm)))
   }
+
+  which_env <- where_env(nm, env)
+
+  which_env[[new_nm]] <- which_env[[nm]]
+  rm(list = nm, envir = which_env)
+
+  invisible(env)
 }
