@@ -44,16 +44,16 @@ test_that("add untyped", {
   d_untyped <- Dictionary$new(x = list(a = 1, b = 2))
 
   expect_silent(d_untyped$add(list(c = 3)))
-  expect_error(d_untyped$add(list(c = 4)), "names of 'x'")
-  expect_error(d_untyped$add(list(a = 3)), "names of 'x'")
+  expect_error(d_untyped$add(list(c = 4)), "Some or all")
+  expect_error(d_untyped$add(list(a = 3)), "Some or all")
   expect_silent(d_untyped$add(list(d = "a")))
 
-  expect_equal(
+  expect_equal_dictionary(
     Dictionary$new(x = list(a = 1, b = 2))$add(list(c = 3, d = 4)),
     Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4))
   )
 
-  expect_equal(
+  expect_equal_dictionary(
     Dictionary$new(x = list(a = 1, b = 2))$add(keys = c("c", "d"),
                                                values = 3:4),
     Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4))
@@ -66,11 +66,11 @@ test_that("add typed", {
   d_typed <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
 
   expect_silent(d_typed$add(list(c = 3)))
-  expect_error(d_typed$add(list(c = 4)), "names of 'x'")
-  expect_error(d_typed$add(list(a = 3)), "names of 'x'")
+  expect_error(d_typed$add(list(c = 4)), "Some or all")
+  expect_error(d_typed$add(list(a = 3)), "Some or all")
   expect_error(d_typed$add(list(d = "a")), "numeric")
 
-  expect_equal(
+  expect_equal_dictionary(
     Dictionary$new(x = list(a = 1, b = 2), types = "numeric")$add(list(c = 3,
                                                                    d = 4)),
     Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4), types = "numeric")
@@ -79,7 +79,7 @@ test_that("add typed", {
   d <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
   d[c("c", "d")] <- c(3, 4)
 
-  expect_equal(
+  expect_equal_dictionary(
     d,
     Dictionary$new(x = list(a = 1, b = 2, c = 3, d = 4), types = "numeric")
   )
@@ -89,28 +89,32 @@ test_that("remove", {
   d_typed <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
   d_untyped <- Dictionary$new(x = list(a = 1, b = 2))
 
-  expect_error(d_typed$remove("c"), "Not all keys")
-  expect_error(d_untyped$remove("c"), "Not all keys")
+  expect_error(d_typed$remove("c"), "does not exist")
+  expect_error(d_untyped$remove("c"), "does not exist")
 
-  expect_equal(d_typed$remove(letters[1:2]), Dictionary$new(types = "numeric"))
-  expect_equal(d_untyped$remove(letters[1:2]), Dictionary$new())
+  expect_equal_dictionary(d_typed$remove(letters[1:2]),
+               Dictionary$new(types = "numeric"))
+  expect_equal_dictionary(d_untyped$remove(letters[1:2]), Dictionary$new())
 
   expect_silent(d_untyped$add(list(a = 1, b = 2)))
-  expect_equal(d_untyped$remove("a"), Dictionary$new(x = list(b = 2)))
+  expect_equal_dictionary(
+    d_untyped$remove("a"),
+    Dictionary$new(x = list(b = 2))
+  )
 })
 
 test_that("get", {
   d_untyped <- Dictionary$new(x = list(a = 1, b = "a"))
   expect_equal(d_untyped$get("a"), 1)
   expect_equal(d_untyped$get("b"), "a")
-  expect_error(d_untyped$get("c"), "Not all keys")
+  expect_error(d_untyped$get("c"), "value for")
   expect_error(d_untyped$get(letters[1:2]), "length")
 
   d_typed <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
   expect_equal(d_typed$get("a"), 1)
   expect_equal(d_typed$get("b"), 2)
   expect_equal(d_typed$get(letters[1:2]), c(1, 2))
-  expect_error(d_typed$get("c"), "Not all keys")
+  expect_error(d_typed$get("c"), "value for")
 
   d <- Dictionary$new(x = list(a = Set$new(1), b = 2))
   expect_equal(d$get("a")$values(), 1)
@@ -147,7 +151,7 @@ test_that("get", {
 test_that("get_list", {
   d_untyped <- Dictionary$new(x = list(a = 1, b = 2))
 
-  expect_error(d_untyped$get_list("c"), "Not all keys")
+  expect_error(d_untyped$get_list("c"), "value for")
   expect_equal(d_untyped$get_list("a"), list(a = 1))
   expect_equal(d_untyped$get_list(c("a", "b")), list(a = 1, b = 2))
   expect_equal(d_untyped[c("a", "b")], list(a = 1, b = 2))
@@ -161,7 +165,8 @@ test_that("has", {
   d_untyped <- Dictionary$new(x = list(a = 1, b = 2))
   expect_true(d_untyped$has("a"))
   expect_false(d_untyped$has("c"))
-  expect_equal(d_untyped$has(c("a", "c", "b")), c(TRUE, FALSE, TRUE))
+  expect_equal(d_untyped$has(c("a", "c", "b")),
+               c(a = TRUE, c = FALSE, b = TRUE))
 })
 
 test_that("has_value", {
@@ -174,14 +179,14 @@ test_that("has_value", {
 test_that("rekey", {
   d_untyped <- Dictionary$new(x = list(a = 1, b = 2))
   expect_silent(d_untyped$rekey("a", "c"))
-  expect_equal(d_untyped$items, list(c = 1, b = 2))
+  expect_mapequal(d_untyped$items, list(c = 1, b = 2))
   expect_error(d_untyped$rekey("a", "d"), "Not all keys")
   expect_error(d_untyped$rekey("c", "b"), "already exists")
 })
 
 test_that("active", {
   d_typed <- Dictionary$new(x = list(a = 1, b = 2), types = "numeric")
-  expect_equal(d_typed$keys, c("a", "b"))
+  expect_setequal(d_typed$keys, c("a", "b"))
   expect_equal(d_typed$length, 2)
   expect_equal(length(d_typed), 2)
 
@@ -191,17 +196,17 @@ test_that("active", {
   expect_equal(d_typed$types, c("numeric"))
   expect_equal(Dictionary$new(x = list(a = 1, b = 2))$types, NULL)
 
-  expect_equal(d_typed$values, c(1, 2))
-  expect_equal(Dictionary$new(x = list(a = 1, b = 2))$values, list(1, 2))
+  expect_setequal(d_typed$values, c(1, 2))
+  expect_setequal(Dictionary$new(x = list(a = 1, b = 2))$values, list(1, 2))
 
-  expect_equal(d_typed$items, list(a = 1, b = 2))
+  expect_mapequal(d_typed$items, list(b = 2, a = 1))
   d_typed$items$a <- 2
   expect_equal(d_typed$items, list(a = 2, b = 2))
   expect_error({ d_typed$items$a <- "c" }) # nolint
   d_typed$items$a <- NULL
   expect_equal(d_typed$items, list(b = 2))
   d_typed$items <- list(a = 3, b = 4)
-  expect_equal(d_typed$items, list(a = 3, b = 4))
+  expect_mapequal(d_typed$items, list(b = 4, a = 3))
 
   d_typed <- Dictionary$new(x = list(a = 1, b = 2, c = 3), types = "numeric")
   d_typed$items[letters[1:2]] <- NULL
@@ -242,14 +247,14 @@ test_that("concatenate", {
   expect_error(c(a_typed, c_typed), "same type")
   expect_error(c(d_typed, e_typed), "same type")
   expect_error(c(a_typed, a_untyped), "typed or all")
-  expect_error(c(a_typed, d_typed), "names of 'x'")
-  expect_equal(c(b_typed, c_typed),
+  expect_error(c(a_typed, d_typed), "'x' must have unique")
+  expect_equal_dictionary(c(b_typed, c_typed),
                Dictionary$new(x = list(b = 2, c = 3),
                               types = c("numeric", "integer")))
 
   expect_error(c(a_untyped, a_typed), "typed or all")
-  expect_error(c(a_typed, d_typed), "names of 'x'")
-  expect_equal(c(a_untyped, b_untyped, c_untyped),
+  expect_error(c(a_typed, d_typed), "'x' must have unique")
+  expect_equal_dictionary(c(a_untyped, b_untyped, c_untyped),
                Dictionary$new(x = list(a = 1, b = 2, c = 2)))
 })
 
@@ -264,8 +269,9 @@ test_that("merge", {
   d_untyped <- Dictionary$new(x = list(a = 2))
 
   expect_equal(a_typed$merge(list(b_untyped, c_untyped))$items,
-               list(a = 1, b = 2, c = 2))
-  expect_error(a_typed$merge(a_untyped)$items, "inherit")
+               list(c = 2, b = 2, a = 1))
+  expect_error(a_typed$merge(a_untyped), "Some or")
+  expect_error(d_typed$merge(d_untyped), "Some or")
   expect_error(a_typed$merge("a"), "Dictionary or")
 })
 
@@ -293,6 +299,6 @@ test_that("can revalue", {
 test_that("can add R6", {
   d <- dct(a = 1)
   d$add(keys = "b", values = Set$new(1))
-  expect_equal(d$keys, c("a", "b"))
+  expect_setequal(d$keys, c("a", "b"))
   expect_equal(d$get("b")$values(), 1)
 })

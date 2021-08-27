@@ -1,6 +1,10 @@
 .Dictionary__initialize <- function(self, private, x, types) { # nolint
   if (length(x)) {
-    private$.items <- assert_named_list(x, types = types)
+    private$.items <- list2env(
+       assert_named_list(x, types = types),
+       parent = emptyenv(),
+       hash = TRUE
+    )
   }
 
   private$.types <- types
@@ -12,23 +16,33 @@
       if (is.null(keys) || is.null(values)) {
          stop("Either a named list or 'keys' and 'values' must be provided.") # nolint
       }
-      if (!is_r6(values) && length(values) > 1) {
+      if (!is.R6Object(values) && length(values) > 1) {
          values <- as.list(values)
       } else if (!is.list(values)) {
          values <- list(values)
       }
       x <- setNames(as.list(values), keys)
    }
+
    # signif quicker than first concatenating and then checking type
+   if (any(self$has(ls(x)))) {
+      stop("Some or all keys of new values already exist in the dictionary")
+   }
+
    assert_named_list(x, types = private$.types)
-   private$.items <- assert_named_list(c(private$.items, x))
+
+   if (is.list(x)) {
+      private$.items <- list2env(x, parent = private$.items, hash = TRUE)
+   } else {
+      parent.env(x) <- private$.items
+      private$.items <- x
+   }
+
    invisible(self)
 }
 
 .Dictionary__remove <- function(self, private, x) { # nolint
-   private$.items[self$assert_contains(x)] <- NULL
-   # catch all.equal named list vs list
-   if (!length(private$.items)) private$.items <- list()
+   lapply(x, rm_env, private$.items)
    invisible(self)
 }
 
@@ -46,9 +60,9 @@
    }
 
    x <- unlist(lapply(
-      private$.items[self$assert_contains(x)],
+      mget(x, private$.items, inherits = TRUE),
       function(.x) {
-         if (is_r6(.x) && clone) {
+         if (is.R6Object(.x) && clone) {
             .x$clone(deep = TRUE)
          } else {
             .x
@@ -69,18 +83,19 @@
 }
 
 .Dictionary__get_list <- function(self, private, x, clone = TRUE) { # nolint
-   lapply(private$.items[self$assert_contains(x)],
-          function(.x) {
-             if (is_r6(.x) && clone) {
-                .x$clone(deep = TRUE)
-             } else {
-                .x
-             }
-          })
+   lapply(
+      mget(x, private$.items, inherits = TRUE),
+      function(.x) {
+         if (is.R6Object(.x) && clone) {
+            .x$clone(deep = TRUE)
+         } else {
+            .x
+         }
+      })
 }
 
 .Dictionary__has <- function(self, private, x) { # nolint
-   x %in% self$keys
+   !is.na(mget(x, private$.items, ifnotfound = NA, inherits = TRUE))
 }
 
 .Dictionary__has_value <- function(self, private, x) { # nolint
@@ -109,7 +124,7 @@
      stop("'new_key' already exists in self$keys")
    }
 
-   names(private$.items)[match(key, names(private$.items))] <- new_key
+   rename_env_item(key, new_key, private$.items)
    invisible(self)
 }
 
@@ -119,16 +134,17 @@
    if (self$typed) {
       stopifnot(inherits(key, self$types))
    }
-   private$.items[[key]] <- new_value
+
+   update_env_value(key, new_value, private$.items)
    invisible(self)
 }
 
 .Dictionary__merge <- function(self, private, x) { # nolint
 
    if (inherits(x, "Dictionary")) {
-      self$add(x$items)
+      self$add(private(x)$.items)
    } else if (is.list(x)) {
-      lapply(x, function(.x) self$add(.x$items))
+      lapply(x, function(.x) self$add(private(.x)$.items))
    } else {
       stop("'x' should either be a Dictionary or list of Dictionaries.")
    }
@@ -137,21 +153,25 @@
 
 .Dictionary__values <- function(self, private) { # nolint
    if (length(private$.types == 1)) {
-      unname(unlist(private$.items))
+      unname(unlist(self$items))
    } else {
-      unname(private$.items)
+      unname(self$items)
    }
 }
 
 .Dictionary__items <- function(self, private, x) { # nolint
    if (missing(x)) {
-      private$.items
+      as_list_env(private$.items)
    } else {
       if (length(x)) {
-         private$.items <- assert_named_list(x, private$.types)
+         private$.items <- list2env(
+            assert_named_list(x, private$.types),
+            parent = emptyenv(),
+            hash = TRUE
+         )
       } else {
-         private$.items <- NULL
+         private$.items <- emptyenv()
       }
-
+     invisible(self)
    }
 }

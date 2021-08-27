@@ -3,7 +3,6 @@
   x$get_list(i)
 }
 
-
 #' @export
 `[<-.Dictionary` <- function(x, i, value) { # nolint
   x$add(keys = i, values = value)
@@ -27,15 +26,21 @@ as.character.Dictionary <- function(x, n = 2, ...) { # nolint
 
   lng <- x$length
   if (lng > (2 * n)) {
-    string <- paste0(paste(keys[1:n], values[1:n], sep = ": ",
-                           collapse = ", "),
-                     ", ..., ", paste(keys[(lng - n + 1):lng],
-                                      values[(lng - n + 1):lng],
-                                      sep = ": ", collapse = ", "))
+    string <- paste0(
+      paste(keys[1:n], values[1:n],
+        sep = ": ",
+        collapse = ", "
+      ),
+      ", ..., ", paste(keys[(lng - n + 1):lng],
+        values[(lng - n + 1):lng],
+        sep = ": ", collapse = ", "
+      )
+    )
   } else {
     string <- paste(keys, values, sep = ": ", collapse = ", ")
   }
-  return(paste0("{", string, "}"))
+
+  sprintf("{%s}", string)
 }
 
 #' @export
@@ -50,7 +55,7 @@ c.Dictionary <- function(...) {
   } else {
     # untyped
     if (!unlist(types[1, 1])) {
-      Dictionary$new(x = unlist(lapply(x, "[[", "items"), recursive = FALSE))
+      Dictionary$new(x = unlist(lapply(x, "[[", "items"), FALSE))
       # typed
     } else {
       # different type lengths
@@ -60,8 +65,7 @@ c.Dictionary <- function(...) {
         if (length(unique(unlist(types[3, ]))) != types[2, 1][[1]]) {
           stop("Can only combine typed Dictionaries of the same type(s).")
         } else {
-          Dictionary$new(x = unlist(lapply(x, "[[", "items"),
-                                    recursive = FALSE),
+          Dictionary$new(x = unlist(lapply(x, "[[", "items"), FALSE),
                          types = unlist(types[3, 1]))
         }
       }

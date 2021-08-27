@@ -8,18 +8,19 @@
 #' @export
 Dictionary <- R6Class("Dictionary",
   private = list(
-    .items = list(),
+    .items = new.env(parent = emptyenv()),
     .types = NULL,
     deep_clone = function(name, value) {
-      switch(name,
-             ".items" = sapply(value, function(.x) {
-               if (is_r6(.x)) {
-                 .x$clone(deep = TRUE)
-               } else {
-                 .x
-               }
-             }),
-             value
+      switch(
+        name,
+        ".items" = list2env(lapply(value, function(.x) {
+            if (is.R6Object(.x)) {
+              .x$clone(deep = TRUE)
+            } else {
+              .x
+            }
+          }), parent = emptyenv(), hash = TRUE),
+        value
       )
     }
   ),
@@ -141,7 +142,7 @@ Dictionary <- R6Class("Dictionary",
   active = list(
     #' @field keys None -> `character()` \cr
     #' Get dictionary keys.
-    keys = function() names(private$.items),
+    keys = function() ls_env(private$.items),
 
     #' @field values None -> `list()` \cr
     #' Get dictionary values.
@@ -154,7 +155,7 @@ Dictionary <- R6Class("Dictionary",
 
     #' @field length None -> `integer(1)` \cr
     #' Get dictionary length as number of items.
-    length = function() length(private$.items),
+    length = function() length_env(private$.items),
 
     #' @field typed None -> `logical(1)` \cr
     #' Get if the dictionary is typed (`TRUE`) or not (`FALSE`).
