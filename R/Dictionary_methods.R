@@ -24,7 +24,7 @@
       x <- setNames(as.list(values), keys)
    }
    # signif quicker than first concatenating and then checking type
-   if (any(ls(x) %in% ls_env(private$.items))) {
+   if (any(self$has(ls(x)))) {
       stop("Some or all keys of new values already exist in the dictionary")
    }
 
