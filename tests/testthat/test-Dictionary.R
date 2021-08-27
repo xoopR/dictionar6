@@ -270,7 +270,8 @@ test_that("merge", {
 
   expect_equal(a_typed$merge(list(b_untyped, c_untyped))$items,
                list(c = 2, b = 2, a = 1))
-  expect_error(a_typed$merge(a_untyped)$items, "Some or")
+  expect_error(a_typed$merge(a_untyped), "Some or")
+  expect_error(d_typed$merge(d_untyped), "Some or")
   expect_error(a_typed$merge("a"), "Dictionary or")
 })
 

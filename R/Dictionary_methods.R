@@ -23,6 +23,7 @@
       }
       x <- setNames(as.list(values), keys)
    }
+
    # signif quicker than first concatenating and then checking type
    if (any(self$has(ls(x)))) {
       stop("Some or all keys of new values already exist in the dictionary")
@@ -94,7 +95,7 @@
 }
 
 .Dictionary__has <- function(self, private, x) { # nolint
-   !is.na(mget(x, private$.items, ifnotfound = NA))
+   !is.na(mget(x, private$.items, ifnotfound = NA, inherits = TRUE))
 }
 
 .Dictionary__has_value <- function(self, private, x) { # nolint
