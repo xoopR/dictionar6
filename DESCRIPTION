@@ -21,5 +21,3 @@ Imports:
   R6
 Suggests:
   testthat
-Remotes:
-  xoopR/ooplah
